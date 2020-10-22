@@ -1,13 +1,21 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SanphamComponent } from './sanpham/sanpham.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
-  {path:'',component:SanphamComponent},
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: '',
+    loadChildren: () => import('./main/main.module').then((m) => m.MainModule),
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
+ 
