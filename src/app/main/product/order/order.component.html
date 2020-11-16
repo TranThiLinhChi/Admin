@@ -1,1 +1,206 @@
-<p>order works!</p>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Quản lý đơn hàng</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+              <li class="breadcrumb-item active">Đơn hàng</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- Main content -->
+    <section class="content">
+
+      <!-- Default box -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Projects</h3>
+
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+              <i class="fas fa-minus"></i></button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+              <i class="fas fa-times"></i></button>
+          </div>
+        </div>
+
+
+        <div class="card-body p-0">
+          <table class="table table-striped projects table">
+              <thead>
+                  <tr>
+                      <th>
+                          STT
+                      </th>
+                      <th>
+                         Tên khách hàng
+                      </th>
+                      <th>
+                          Số điện thoại
+                      </th>
+                      <th>
+                          Tổng tiền
+                      </th>
+                      <th>
+                          Ngày đặt
+                      </th>
+                        <!-- <th>
+                          Status
+                      </th> -->
+                      <th> Thao tác
+                      </th>
+                  </tr>
+              </thead>
+              <tbody>
+
+
+                <ng-container *ngFor="let item of list_order; let i = index">
+
+                  <tr>
+                      <td>
+                         {{ i + 1 }}
+                      </td>
+                      <td>
+                         {{item.name}}
+                      </td>
+                      <td>
+                       {{item.phone}}
+                      </td>
+                      <td>
+                        {{ item.total |number }} VNĐ
+                      </td>
+                      <td>
+                        {{ item.created_at | date:'dd/M/y'}}
+                      </td>
+<!--               
+                      <td class="project-state">
+                    <ng-container [ngSwitch]="item.status">
+                       <span class="badge badge-danger" *ngSwitchCase="0">Đơn đã hủy</span>
+                        <span class="badge badge-primary" *ngSwitchCase="1">Tiếp nhận đơn</span>
+                        <span class="badge badge-secondary" *ngSwitchCase="2">Đã xác thực</span>
+                        <span class="badge badge-success" *ngSwitchCase="3">Đã chuyển giao</span>
+                    </ng-container>
+                          <span class="badge badge-success">Success</span> 
+                      </td> -->
+                      <td class="project-actions text-left">
+                          <button class="btn btn-primary btn-sm" data-id="item.id_bill" (click)="ViewDetail(item.id)">
+                              <i class="fas fa-eye">
+                              </i>
+                              View
+                          </button>
+                          &nbsp;
+
+
+
+                <div class="btn-group">
+                  <button type="button" class="btn  btn-sm btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Thao tác</button>
+                          <div class="dropdown-menu">
+                         <a  class="dropdown-item" (click)="deleteBill(item.id)">
+                              <i class="fas fa-trash">
+                              </i>
+                              Xóa đơn hàng
+                          </a>
+                          <div class="dropdown-divider"></div>
+                          <a class="dropdown-item"  (click)="changeStatus( item.id,'process')">
+                             <i class="fas fa-ban"> </i>  Đã xác thực</a>
+                          <a class="dropdown-item"(click)="changeStatus(item.id,'success')"> <i class="fas fa-ban"> </i>  Đã chuyển giao</a>
+                          <a class="dropdown-item"(click)="changeStatus(item.id,'danger')"> <i class="fas fa-ban"> </i>   Đã hủy</a>
+
+                        </div>
+                      </div>
+
+                      </td>
+                  </tr>
+                  </ng-container>
+
+
+              </tbody>
+          </table>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+  </div> 
+  <!-- /.content-wrapper -->
+<!-- Button trigger modal-->
+
+
+<!-- Modal: modalCart -->
+<div class="modal fade" id="myBill" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Chi tiết đơn hàng</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <!--Body-->
+      <div class="modal-body">
+
+        <table class="table table-hover">
+          <thead>
+            <tr style="border-top:none">
+              <th>Stt</th>
+              <th>Tên sản phẩm</th>
+              <th>Số lượng</th>
+              <th>Giá</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let s of bill_detail; let i = index">
+            <tr>
+              <th scope="row">{{ i + 1 }}</th>
+              <td>{{ s.name_pro}}</td>
+              <td>{{ s.quantity_sale }}</td>
+              <td>{{ s.unit_price | number}} VNĐ</td>
+            </tr>
+            </ng-container>
+
+
+          </tbody>
+        </table>
+
+      </div>
+      <!--Footer-->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Đóng</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal: modalCart -->
+
+<div id="confirmModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2 class="modal-title">Thông báo!</h2>
+            </div>
+            <div class="modal-body">
+                <h4 align="center" style="margin:0;">Bạn có chắc chắc muốn xóa đơn hàng này không!</h4>
+            </div>
+            <div class="modal-footer">
+             <button type="button" name="ok_button" id="ok_button" class="btn btn-danger">OK</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
+
