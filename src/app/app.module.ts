@@ -8,30 +8,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 //import { BaseComponent } from './common/base-component';
 import { LoginComponent } from './login/login.component';
-import { MainComponent } from './main/main.component';
-import { DashboardComponent } from './main/dashboard/dashboard.component';
-import { OrderComponent } from './main/product/order/order.component';
-import { ProductComponent } from './main/product/product/product.component';
-import { TypeComponent } from './main/product/type/type.component';
-import { UserComponent } from './main/user/user/user.component';
-import { FooterComponent } from './shared/footer/footer.component';
-import { NavbarComponent } from './shared/navbar/navbar.component';
-import { SidebarComponent } from './shared/sidebar/sidebar.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ErrorInterceptor } from './common/error.interceptor';
+import { JwtInterceptor } from './common/jwt.interceptor';
 
 @NgModule({
   declarations: [
     AppComponent,
-    // BaseComponent,
     LoginComponent,
-    //  MainComponent,
-    //  DashboardComponent,
-    //  OrderComponent,
-    //  ProductComponent,
-    // TypeComponent,
-    // UserComponent,
-    // FooterComponent,
-    // NavbarComponent,
-    // SidebarComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +24,10 @@ import { SidebarComponent } from './shared/sidebar/sidebar.component';
     BrowserAnimationsModule,
     ReactiveFormsModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}
